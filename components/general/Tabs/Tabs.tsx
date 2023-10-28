@@ -1,18 +1,27 @@
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
+// React Peer Dependencies
 import React, { ReactNode, useMemo, useState } from "react";
+import { StyleSheet, View, ViewStyle, StyleProp } from "react-native";
+// React Native Paper
+import { useTheme } from "react-native-paper";
+// Custom Components
 import { Button } from "../../../constants/components";
-interface Tab {
+
+// Types And Interfaces
+interface TabProps {
   summary: string | ReactNode;
   icon: string;
   content: ReactNode;
 }
-interface Props {
-  tabs: Tab[];
+
+interface TabsProps {
+  tabs: TabProps[];
+  style?: StyleProp<ViewStyle>;
 }
 
-const Tabs = ({ tabs }: Props) => {
+const Tabs = ({ tabs, style: suppliedStyles }: TabsProps) => {
+  // Theme
   const theme = useTheme();
+  // Styles
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -48,7 +57,7 @@ const Tabs = ({ tabs }: Props) => {
   const { summary: activeSummary, content: activeContent } = tabs[activeTab];
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, suppliedStyles]}>
         {tabs.map(({ summary, icon }, i) => (
           <Button
             key={`tab-summary-${i}`}
@@ -70,3 +79,4 @@ const Tabs = ({ tabs }: Props) => {
 };
 
 export default Tabs;
+export type { TabsProps, TabProps };
